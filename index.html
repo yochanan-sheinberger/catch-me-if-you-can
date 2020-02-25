@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <section class="container">
+       
+        <button onclick="startFuncs.selectTheme()">
+            <span class="catch-me">CATCH ME IF YOU CAN!</span>
+            <span class="start">Click to Start</span>
+        </button>
+
+        <div class="main">
+            <div class="game-frame">
+                <div class="game-board" id="game-board">
+                </div>
+                <img src="images/fly.png" alt="" class="spining-img" id="spining-img">
+
+                <img src="images/crush.png" alt="" class="crush-them" id="crush-them" style="display: block;">
+
+                <div class="Select-theme" id="Select-theme">
+                    <h2>Select a Theme</h2>
+                    <div class="flexbox">
+                        <div>
+                            <img src="images/kitchen.jpg" onclick="startFuncs.selectFly()">
+                            <p>Fly In The Kitchen</p>
+                        </div>
+                        <div>
+                            <img src="images/picnic.jpg" onclick="startFuncs.selectBee()">
+                            <p>Bee On The Picnic</p>
+                        </div>
+                        <div>
+                            <img src="images/bedroom.jpg" onclick="startFuncs.selectMosquito()">
+                            <p>Moscuito In The Bedroom</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="choose-difficulty" id="choose-difficulty">
+                    <h2>Choose Difficulty</h2>
+                    <button onclick="startFuncs.setEasy()">Easy</button>
+                    <button onclick="startFuncs.setNormal()">Normal</button>
+                    <button onclick="startFuncs.setHard()">Hard</button>
+                </div>
+                
+            </div>
+            <div class="Scoreboard">
+                <div class="score-div">
+                    <h2 title="simchy">Score:</h2>
+                    <p id="score">0</p>
+                </div>
+                <div class="score-div">
+                    <h2>Points to Next Level:</h2>
+                    <p id="points">10</p>
+                </div>
+                <div class="score-div">
+                    <h2>Level:</h2>
+                    <p id="level">1</p>
+                </div>
+                <div class="score-div">
+                    <h2>Missed Clicks:</h2>
+                    <p id="missed">0</p>  
+                </div>
+                <div class="score-div">
+                    <h2>Timer:</h2>
+                    <p id="timer">60</p>
+                </div>
+                <div class="score-div">
+                    <h2>High Scores:</h2>
+                    <div class="high-score" id="high-score">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    
+
+    </section>
+
+    <audio src="sound/success.wav"  type="audio/wav" id="success"></audio>
+    <audio src="sound/failure.wav"  type="audio/wav" id="failure"></audio>
+    <audio src="sound/bee.wav"  type="audio/wav" id="insect"></audio>
+
+
+
+    
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+*{
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container{
+    width: 1000px;
+    margin: auto;
+    padding-top: 10px;
+}
+
+.container > button{
+    width: 100%;
+    border: 2px solid rebeccapurple;
+    padding: 10px;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    background-color: coral;
+    color: darkgreen;
+    box-shadow: 0px 1px 9px 1px #4d4a4a;
+    cursor: pointer;
+}
+
+.container > button:hover{
+    box-shadow: none;
+}
+
+.container > button:hover .start{
+    display: inline;
+}
+
+.container > button:hover .catch-me{
+    display: none;
+}
+
+.start{
+    display: none;
+}
+
+.main{
+    display: flex;
+}
+
+.game-frame{
+    width: 80%;
+    height: 600px;
+    margin-right: 1.8%;
+    position: relative;
+}
+
+.game-board{
+    width: 100%;
+    height: 600px;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: 1px solid black;
+    position: absolute;
+    cursor: url(../images/swatter.png), auto;
+}
+
+.spining-img{
+    width: 70px;
+    height: 50px;
+    cursor: url(../images/swatter.png), auto;
+    position: absolute;
+    animation: rotate linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.crush-them{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background-color: #7fff00;
+    border: 4px solid rebeccapurple;
+}
+
+.flexbox{
+    display: flex;
+    justify-content: space-around;
+}
+
+.Select-theme{
+    width: 100%;
+    height: 600px;
+    padding-top: 100px;
+    background-color: #0b00ff;
+    position: absolute;
+    text-align: center;
+    border: 4px solid rebeccapurple;
+}
+
+.Select-theme h2{
+    color: #fbff00;
+    font-size: 50px;
+    text-shadow: 0 0 20px #0d03a7;
+}
+
+.Select-theme img{
+    height: 160px;
+    display: inline-block;
+    border: 2px solid #ffff00;
+    box-shadow: 0 0 9px 4px #00c2ff;
+    border-radius: 10px;
+    opacity: 0.4;
+    cursor: pointer;
+}
+
+.Select-theme img:hover{
+    opacity: 1;
+}
+
+.Select-theme p{
+    color: #eddc14;
+    font-size: 20px;
+}
+
+.choose-difficulty{
+    display: none;
+    width: 400px;
+    height: 370px;
+    padding-top: 20px;
+    background-color: chartreuse;
+    border: 3px solid rebeccapurple;
+    border-radius: 10px;
+    position: absolute;
+    top: 19%;
+    left: 25.2%;
+    text-align: center;
+}
+.choose-difficulty h2{
+    color: #320164;
+    margin-block-end: 40px;
+}
+
+.choose-difficulty button{
+    width: 70%;
+    border: 2px solid rebeccapurple;
+    padding: 10px;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    background-color: coral;
+    color: darkgreen;
+    box-shadow: 0px 1px 9px 1px #4d4a4a;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.choose-difficulty button:hover{
+    background-color: rgb(255, 82, 20);
+}
+
+.Scoreboard{
+    width: 18%;
+    height: 600px;
+    background-color: chartreuse;
+    box-shadow: 0px 0px 10px 2px #090900;
+}
+
+.score-div{
+    margin: 10px 10px 0;
+    padding: 10px;
+    background-color: cornflowerblue;
+    height: 12%;
+    box-shadow: inset 0px 0px 4px 2px #097c02;
+    border-radius: 10px;
+}
+
+.score-div:last-child{
+    height: 28%;
+    padding: 10px 5px;
+}
+
+.score-div h2{
+    font: normal 15px Arial;
+    margin: 0 0 10px 0;
+}
+
+.score-div p{
+    font: bold 16px Arial;
+    margin: 0;
+}
+
+.score-div:last-child h2{
+    margin-left: 5px;
+}
+
+.high-score{
+    background-color: #fece00;
+    width: 100%;
+    height: 85%;
+    padding: 4px 5px;
+    font-weight: bold;
+    color: rgb(17, 5, 180);
+    box-shadow: 0px 0px 3px 2px #037c15;
+    border-radius: 0 0 7px 7px;
+}
+
+.high-score > span{
+    margin-top: 3px;
+    padding-bottom: 2px;
+    width: 100%;
+    display: inline-block;
+    border-bottom: 1px dashed rgb(17, 5, 180);
+    position: relative;
+    cursor: context-menu;
+}
+
+.high-score span:last-of-type{
+    border: none;
+}
+
+.high-score span:hover .tooltiptext{
+    display: inline-block;
+}
+
+.tooltiptext{
+    display: none;
+    position: absolute;
+    left: 30%;
+    top: -115%;
+    background-color: #000;
+    color: white;
+    font-weight: 300;
+    font-size: 13px;
+    width: auto;
+    padding: 2px 8px;
+    border-radius: 5px;
+}
+
+.tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #000 transparent transparent transparent;
+}
