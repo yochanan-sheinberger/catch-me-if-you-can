@@ -40,7 +40,8 @@ const vars = {
     toAppend: "",
     time: 300,
     spinSpeed: 2,
-    hard: false
+    hard: false,
+    change: undefined
 };
 
 const startFuncs ={
@@ -129,7 +130,7 @@ const gameFuncs = {
     },
     // runs the timer and calls for changePositionHard. when timer reaches 0, stops running and calls for stopGame.
     runTimer: function() {
-        var timer = setInterval(function(){
+        timer = setInterval(function(){
             htmlIds.timer.val--;
             htmlIds.timer.DOM.innerHTML = htmlIds.timer.val;
             if (htmlIds.timer.val == 0) {
@@ -157,10 +158,8 @@ const gameFuncs = {
     // if game-mode-hard was chosen, changes position of spin-img every 3 sconds.
     changePositionHard: function() {
         if (vars.hard) {
-            setTimeout(function(){
-                htmlIds.insectSound.play();
-                htmlIds.spinImg.style.top = Math.random() * 92 + "%"; 
-                htmlIds.spinImg.style.left = Math.random() * 93 + "%"; 
+            vars.change = setInterval(function() {
+                gameFuncs.changePosition();
             }, 3000);
         };
     },
@@ -185,6 +184,7 @@ const gameFuncs = {
     stepUp: function(num) {
         if (num == 10) {
             if (htmlIds.level.val == 5) {
+                clearInterval(timer);
                 stopFuncs.stopGame();
                 htmlIds.points.DOM.innerHTML = 0;
             } else {
@@ -200,13 +200,14 @@ const gameFuncs = {
 
 const stopFuncs = {
    /* stops spining animation, resets spin-img position, removes listeners from spin-img and game-board, 
-       enables start buttun, and calls for checkScore. */
+       enables start buttun, stops hard-mode positioning, and calls for checkScore. */
     stopGame: function() {
         htmlIds.spinImg.style = "";
         htmlIds.spinImg.removeEventListener("click", gameFuncs.addScore);
         htmlIds.spinImg.removeEventListener("mouseover", gameFuncs.changePosition);
         htmlIds.gameBoard.removeEventListener("click", gameFuncs.reduceScore);
         htmlIds.startBtn.disabled = false;
+        clearInterval(vars.change);
         this.checkScore();
     },
     // resets all score-board fields - except high-scores, select and difficulty divs, and hard-mode positioning.
@@ -229,6 +230,7 @@ const stopFuncs = {
     checkScore: function() {
         let i = vars.highScorers.length - 1;
         let date = new Date();
+        console.log(date);
         let formats = {month: "2-digit", day: "2-digit", year: "numeric"};
         if (htmlIds.score.val > vars.highScorers[i].score) {
             this.createPlayer(date, formats);
