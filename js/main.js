@@ -30,7 +30,7 @@ const htmlIds = {
     failureSound: document.getElementById("failure"),
     insectSound: document.getElementById("insect")
 };
-
+console.log(htmlIds.highScore.val);
 
 const vars = {
     highScorers: [{
@@ -38,6 +38,7 @@ const vars = {
     }],
     highScorersJSON: localStorage.getItem("highScore"),
     toAppend: "",
+    timer: null,
     time: 300,
     spinSpeed: 2,
     hard: false,
@@ -46,7 +47,7 @@ const vars = {
 
 const startFuncs ={
     // removes the opening image reveals the select div, and calls for clearing score-board from prev round.
-    selectTheme: function() {
+    selectTheme: ()=> {
         if (htmlIds.crush.style.display == "block") {
             htmlIds.crush.style.display = "none";
         } else {
@@ -76,12 +77,12 @@ const startFuncs ={
         this.chooseDifficulty();
     },
     // removes select div and reveals difficulty div.
-    chooseDifficulty: function() {
+    chooseDifficulty: ()=> {
         htmlIds.select.style.display = "none";
         htmlIds.difficulty.style.display = "block";
     },
     // sets game mode to easy (spin-img size, change-position timing, spin-speed) and calls for startGame.
-    setEasy: function() {
+    setEasy: ()=> {
         htmlIds.spinImg.style.width = 90 + "px";
         htmlIds.spinImg.style.height = 65 + "px";
         vars.time = 400;
@@ -89,7 +90,7 @@ const startFuncs ={
         gameFuncs.startGame();
     },
     // sets game mode to normal (spin-img size, change-position timing, spin-speed) and calls for startGame.
-    setNormal: function() {
+    setNormal: ()=> {
         htmlIds.spinImg.style.width = 80 + "px";
         htmlIds.spinImg.style.height = 60 + "px";
         vars.time = 300;
@@ -97,7 +98,7 @@ const startFuncs ={
         gameFuncs.startGame();
     },
     // sets game mode to hard (spin-img size, change-position timing, spin-speed, additional chang-position) and calls for startGame.
-    setHard: function() {
+    setHard: ()=> {
         htmlIds.spinImg.style.width = 70 + "px";
         htmlIds.spinImg.style.height = 50 + "px";
         vars.time = 250;
@@ -113,7 +114,7 @@ const gameFuncs = {
     else resets opening image and select div. */
     startGame: function() {
         htmlIds.difficulty.style.display = "none";
-        setTimeout(function() {
+        setTimeout( ()=> {
             var conf = confirm("Ready to start?");
             if (conf) {
                 htmlIds.spinImg.style.animationDuration = vars.spinSpeed + "s";
@@ -121,7 +122,7 @@ const gameFuncs = {
                 htmlIds.spinImg.addEventListener("mouseover", gameFuncs.changePosition);
                 htmlIds.gameBoard.addEventListener("click", gameFuncs.reduceScore);
                 htmlIds.startBtn.disabled = true;
-                gameFuncs.runTimer();
+                this.runTimer();
             } else {
                 htmlIds.crush.style.display = "block";
                 htmlIds.select.style.display = "block";
@@ -130,26 +131,26 @@ const gameFuncs = {
     },
     // runs the timer and calls for changePositionHard. when timer reaches 0, stops running and calls for stopGame.
     runTimer: function() {
-        timer = setInterval(function(){
+        vars.timer = setInterval(()=>{
             htmlIds.timer.val--;
             htmlIds.timer.DOM.innerHTML = htmlIds.timer.val;
             if (htmlIds.timer.val == 0) {
-                clearInterval(timer);
+                clearInterval(vars.timer);
                 stopFuncs.stopGame();
             };
-        }, 1000);
-        gameFuncs.changePositionHard();
+        }, 100);
+        this.changePositionHard();
     },
     // plays success-sound. adds score, and calls for reducePoints when clicking on spin-img.
-    addScore: function() {
+    addScore: ()=> {
         htmlIds.successSound.play();
         htmlIds.score.val += htmlIds.level.val * 10;
         htmlIds.score.DOM.innerHTML = htmlIds.score.val;
         gameFuncs.reducePoints();
     },
     // plays insect-sound and changes position of spin-img on-mouse-over
-    changePosition: function() {
-        setTimeout(function(){
+    changePosition: ()=> {
+        setTimeout( ()=> {
             htmlIds.insectSound.play();
             htmlIds.spinImg.style.top = Math.random() * 92 + "%"; 
             htmlIds.spinImg.style.left = Math.random() * 93 + "%"; 
@@ -158,13 +159,13 @@ const gameFuncs = {
     // if game-mode-hard was chosen, changes position of spin-img every 3 sconds.
     changePositionHard: function() {
         if (vars.hard) {
-            vars.change = setInterval(function() {
-                gameFuncs.changePosition();
+            vars.change = setInterval( ()=> {
+                this.changePosition();
             }, 3000);
         };
     },
     // plays failure-sound, reduces score, and increases missed clicks when clicking on game-board.
-    reduceScore: function() {
+    reduceScore: ()=> {
         htmlIds.failureSound.play();
         htmlIds.score.val -= htmlIds.level.val;
         htmlIds.score.DOM.innerHTML = htmlIds.score.val;
@@ -181,7 +182,7 @@ const gameFuncs = {
         this.stepUp(htmlIds.points.val);
     },
     // steps up levels, and Reduces time for spin-img positioning and spining. when level 5 finished, calls for stopGame.
-    stepUp: function(num) {
+    stepUp: (num)=> {
         if (num == 10) {
             if (htmlIds.level.val == 5) {
                 clearInterval(timer);
@@ -193,6 +194,10 @@ const gameFuncs = {
                 vars.time -= 50;
                 vars.spinSpeed -= 0.25;
                 htmlIds.spinImg.style.animationDuration = vars.spinSpeed + "s";
+                htmlIds.timer.val = parseInt(htmlIds.timer.DOM.innerHTML) + 10;
+                clearInterval(vars.timer);
+                console.log(htmlIds.timer.DOM.innerHTML);
+                gameFuncs.runTimer();
             }
         }
     },
@@ -202,7 +207,7 @@ const stopFuncs = {
    /* stops spining animation, resets spin-img position, removes listeners from spin-img and game-board, 
        enables start buttun, stops hard-mode positioning, and calls for checkScore. */
     stopGame: function() {
-        htmlIds.spinImg.style = "";
+        htmlIds.spinImg.style = "stop";
         htmlIds.spinImg.removeEventListener("click", gameFuncs.addScore);
         htmlIds.spinImg.removeEventListener("mouseover", gameFuncs.changePosition);
         htmlIds.gameBoard.removeEventListener("click", gameFuncs.reduceScore);
@@ -211,7 +216,7 @@ const stopFuncs = {
         this.checkScore();
     },
     // resets all score-board fields - except high-scores, select and difficulty divs, and hard-mode positioning.
-    resetScoreBoard: function() {
+    resetScoreBoard: ()=> {
         htmlIds.score.val = 0;
         htmlIds.score.DOM.innerHTML = 0;
         htmlIds.points.val = 10;
@@ -230,7 +235,6 @@ const stopFuncs = {
     checkScore: function() {
         let i = vars.highScorers.length - 1;
         let date = new Date();
-        console.log(date);
         let formats = {month: "2-digit", day: "2-digit", year: "numeric"};
         if (htmlIds.score.val > vars.highScorers[i].score) {
             this.createPlayer(date, formats);
@@ -238,7 +242,7 @@ const stopFuncs = {
     },
     // gets player name and creates an object that includs name, score and date. and calls for updateScorers.
     createPlayer: function(date, formats) {
-        setTimeout(function(){
+        setTimeout( ()=>{
             let name = prompt("Enter your name");
             if (name) {
                 var player = {
@@ -246,7 +250,7 @@ const stopFuncs = {
                         score: htmlIds.score.val,
                         date:date.toLocaleDateString("en", formats)
                     };
-                stopFuncs.updateScorers(player);
+                this.updateScorers(player);
             }
         }, 20);
     },
@@ -271,13 +275,13 @@ const stopFuncs = {
         this.updateLS();
     },
     // createt html tags with high-scores details.
-    addScorer: function(scorer) {
+    addScorer: (scorer)=> {
         toAppend += `<span>${scorer.score} - ${scorer.name}
                          <span class="tooltiptext">${scorer.date}</span>
                      </span></br>`;
     },
     // stringifys high-scorers array and stores it on local storage.
-    updateLS: function () {
+    updateLS: ()=> {
         vars.highScorersJSON = JSON.stringify(vars.highScorers);
         localStorage.setItem("highScore", vars.highScorersJSON);
     }
