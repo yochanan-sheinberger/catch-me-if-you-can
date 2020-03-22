@@ -30,12 +30,9 @@ const htmlIds = {
     failureSound: document.getElementById("failure"),
     insectSound: document.getElementById("insect")
 };
-console.log(htmlIds.highScore.val);
 
 const vars = {
-    highScorers: [{
-        score: 0
-    }],
+    highScorers: [],
     highScorersJSON: localStorage.getItem("highScore"),
     toAppend: "",
     timer: null,
@@ -138,7 +135,7 @@ const gameFuncs = {
                 clearInterval(vars.timer);
                 stopFuncs.stopGame();
             };
-        }, 100);
+        }, 1000);
         this.changePositionHard();
     },
     // plays success-sound. adds score, and calls for reducePoints when clicking on spin-img.
@@ -231,14 +228,16 @@ const stopFuncs = {
         htmlIds.difficulty.style.display = "none";
         vars.hard = false;
     },
-    // creates date and if curent player score is heigher then last high-scorer calls for create player.
+    // creates date and if highscorers are less then 5 or if curent player score is heigher then last high-scorer calls for create player.
     checkScore: function() {
         let i = vars.highScorers.length - 1;
         let date = new Date();
         let formats = {month: "2-digit", day: "2-digit", year: "numeric"};
-        if (htmlIds.score.val > vars.highScorers[i].score) {
+        if(i < 4) {
             this.createPlayer(date, formats);
-        }
+        } else if (htmlIds.score.val > vars.highScorers[i].score) {
+            this.createPlayer(date, formats);
+        }  
     },
     // gets player name and creates an object that includs name, score and date. and calls for updateScorers.
     createPlayer: function(date, formats) {
@@ -254,14 +253,12 @@ const stopFuncs = {
             }
         }, 20);
     },
-    // adds player to high-scores list on proper place. pops out lest scorer if list length is 6. and calls for createScoreList.
+    // adds player to high-scores list, sorts by score. pops out lest scorer if list length is 6. and calls for createScoreList.
     updateScorers: function(player) {
-        for (let i = 0; i < vars.highScorers.length; i++) {
-            if (player.score > vars.highScorers[i].score) {
-                vars.highScorers.splice(i, 0, player);
-                break;
-            }
-        }
+        vars.highScorers.push(player);
+        vars.highScorers.sort((a, b)=> {
+            return b.score - a.score;
+        })
         if (vars.highScorers.length > 5) {
             vars.highScorers.pop();
         };
