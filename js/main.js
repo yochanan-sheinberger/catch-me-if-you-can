@@ -191,7 +191,7 @@ const gameFuncs = {
                 vars.time -= 50;
                 vars.spinSpeed -= 0.25;
                 htmlIds.spinImg.style.animationDuration = vars.spinSpeed + "s";
-                htmlIds.timer.val = parseInt(htmlIds.timer.DOM.innerHTML) + 10;
+                htmlIds.timer.val = htmlIds.timer.val + 10;
                 clearInterval(vars.timer);
                 console.log(htmlIds.timer.DOM.innerHTML);
                 gameFuncs.runTimer();
@@ -233,9 +233,7 @@ const stopFuncs = {
         let i = vars.highScorers.length - 1;
         let date = new Date();
         let formats = {month: "2-digit", day: "2-digit", year: "numeric"};
-        if(i < 4) {
-            this.createPlayer(date, formats);
-        } else if (htmlIds.score.val > vars.highScorers[i].score) {
+        if(i < 4 || htmlIds.score.val > vars.highScorers[i].score) {
             this.createPlayer(date, formats);
         }  
     },
